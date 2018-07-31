@@ -1,0 +1,7 @@
+Uploading finished. Initializing processing algorithm....
+filename is: /eecf/cbcsl/data100/Qianli2/AASLIEforWeb/videoFolderAvi/39/39_M_S_07.avi
+signname is: M_S_07
+processing time is: 2.753000e+01
+evalutaion score is: 4.252746e+02
+good! 
+error occurs while processing video...finished

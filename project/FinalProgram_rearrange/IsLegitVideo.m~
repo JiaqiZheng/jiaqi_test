@@ -1,0 +1,45 @@
+function IsLegitVideo(video_color)
+% decide whether the video is satisfied the assumption of the algorithm
+% 1. total number of skin color pixel criterion: if the total number of
+% skin pixels is larger than the number of skin pixels in the face. Discard
+% the video.
+numFrames = size(video_color);
+
+%% face detection
+% to prevent the occasionly false positive, only consider the frame
+% sequence that stablely contains face detected (10 frames contains faces consecutively).
+faceFrameNum = 0;
+for frameIdx = 1:1:numFrames
+    boxes = facedetector(video_color(:,:,:,frameIdx),true);
+    
+    % consider if there is 10 frames contains faces consecutively
+    if ~isempty(boxes) 
+        faceFrameNum = faceFrameNum + 1;
+    else
+        faceFrameNum = 0;
+    end
+    
+    if faceFrameNum == 10
+        break
+    end
+    
+end
+
+%% skin color pixel detection
+load('./GMMdata/GMMskin5.mat');
+load('./GMMdata/GMMnonskin5.mat');
+GMM_skin = GMM_skin_struct{4};
+GMM_nonskin = GMM_nonskin_struct{4};
+threshold = 0.8;
+
+[ video_bw ] = SkinDetectorGMM( video_color(:,:,:,frameIdx), GMM_skin, GMM_nonskin, threshold, 'all' );
+
+%% get the number of skin pixels inside the face bounding box
+numSkinPixelTotal = sum(sum(video_bw));
+faceBBmask = false(size(video_bw));
+
+numSkinPixelFace = num
+    for i = 1:numel(boxes)
+        rectangle('Position',boxes{i},'EdgeColor','g','LineWidth',2);
+    end
+end

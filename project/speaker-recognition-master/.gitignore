@@ -1,0 +1,14 @@
+test-data
+.*.swp
+*.pyc
+output
+*.wav
+
+bin
+obj
+src/gmm/lib
+src/gui/*.model
+
+corpus.silence-removed
+
+.vimrc.local

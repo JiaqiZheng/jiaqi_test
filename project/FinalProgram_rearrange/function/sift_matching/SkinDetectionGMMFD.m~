@@ -1,0 +1,39 @@
+function [ imagemat_bw ] = SkinDetectionGMMFD( video_color,video_gray, GMM_skin, GMM_nonskin, threshGMM, threshFD, show )
+% Get skin & motion mask based on GMM and frame difference 
+
+imagemat_bw = false(size(video_gray,1),size(video_gray,2),size(video_gray,3));
+
+numFrames = size(video_color,4);
+for frameIdx = 1:1:numFrames
+    %% skin detection using gaussian mixture model
+    thisFrame = video_color(:,:,:,frameIdx);
+    [ video_bw_skin ] = SkinDetectorGMM( thisFrame, GMM_skin, GMM_nonskin, threshGMM, false);
+    threshold = 1.7;
+    weight = 0.08;
+    [ video_bw ] = SkinDetectorGMMInputFaceHSV( video_color, GMM_skin, GMM_nonskin, faceBBs, threshold, weight, show);
+    
+    
+    %% motion strength based on frame difference
+    thisFrameG = video_gray(:,:,frameIdx);
+    if frameIdx == 1
+        lastFrame = thisFrameG; %zeros(size(thisFrameG));
+    end
+    
+    image_bw = FrameDiff( thisFrameG, lastFrame, threshFD);
+    lastFrame = thisFrameG;
+    
+    image_bw_final = video_bw_skin & image_bw;
+    imagemat_bw(:,:,frameIdx) = image_bw_final;
+
+end
+
+if show
+    figure;
+    for frameIdx = 1:1:size(video_color,4)
+        imshow(imagemat_bw(:,:,frameIdx));
+        pause(0.3);
+    end
+end
+
+end
+

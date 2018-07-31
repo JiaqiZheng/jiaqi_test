@@ -1,0 +1,3 @@
+Uploading finished. Initializing processing algorithm....
+filename is: /eecf/cbcsl/data100/Qianli2/AASLIEforWeb/videoFolderAvi/41/41_M_S_05.avi
+signname is: M_S_05

@@ -1,0 +1,31 @@
+function [ matches_index_onlymove, match_points_index_onlymove ] = extractMovingKeypoints( match_points, match_points_Xcoord, match_points_Ycoord, outlier_thresh, stiller_thresh )
+%Extract Keypoints that matched in MATCH_POINTS, exclude the matching
+%outliers and the keypoints move insignificantly across the two frames.
+%   Input:
+%       match_points - is an D-2 matrix whose every row contains a pair of
+%           index of matched keypoints and the columns contains all the
+%           keypoints used in the matching.
+%       match_points_Xcoord - is an D-2 matrix contains the coordinates of
+%           the keypoints in the first column of the match_points. 
+%       match_points_Ycoord - is an D-2 matrix contains the coorinates of
+%           the keypoints in the second column of the match_points.
+%   Output:
+%       matches_index_onlymove - is a N dimensional vector contains N
+%           indexes of the matched moving keypoints in the match_points which
+%           satisfy the criterion.
+%       match_points_index_onlymove - is a N-2 matrix whose each row contains a
+%           pair of the index of the matched moving keypoints satisfying the
+%           criterion.
+% - Qianli Feng, Sep 22, 2015
+
+match_points_distance = match_points_Xcoord - match_points_Ycoord;
+match_points_distance(:,3) = sqrt(match_points_distance(:,1).^2 + match_points_distance(:,2).^2);
+
+% extract the matching pairs that are not outliers and still points across
+% the two frames.
+matches_index_onlymove = find(match_points_distance(:,3) <= outlier_thresh & match_points_distance(:,3) >= stiller_thresh);
+match_points_index_onlymove = match_points(matches_index_onlymove,:);
+
+
+end
+
